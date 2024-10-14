@@ -40,7 +40,7 @@ int main()
 
 	numberOfRows = ReadRows("dat.txt");
 	printf("Broj redova u datoteci je %d\n", numberOfRows);
-	unos("dat.txt", numberOfRows, );
+	//unos("dat.txt", numberOfRows, );
 
 	return 0;
 }
