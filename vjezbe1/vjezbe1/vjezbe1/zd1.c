@@ -7,40 +7,39 @@
 int ReadRows(const char* filename);
 
 typedef struct {
-	char *ime;
-	char* prezime;
+	char ime[10];
+	char prezime[10];
 	int bodovi;
 }listastudenata;
 
-typedef struct llist {
-	listastudenata* st;
-	struct llist* next;
-}list;
-
-listastudenata* unos(const char *filename, int numberOfRows, list *studenti)
-{
-	int i = 0;
-	FILE* fp = NULL;
-	fp = fopen(filename, "r");
-	list* s = studenti;
-
-	listastudenata* list = malloc(sizeof(listastudenata));
-
-	//for (i = 0; i < numberOfRows; i++)
-	//{
-		fgets(s->st->ime, sizeof(s->st->ime), fp);
-	//}
-		printf("%s", s->st->ime);
-
-}
-
 int main()
 {
-	int numberOfRows = 0;
+	int numberOfRows = 0, i, maxbodova = 0;
+	FILE* fp = NULL;
+
+	listastudenata* list;
 
 	numberOfRows = ReadRows("dat.txt");
-	printf("Broj redova u datoteci je %d\n", numberOfRows);
-	//unos("dat.txt", numberOfRows, );
+	printf("Broj redova u datoteci je %d\n\n", numberOfRows);
+
+	list = (listastudenata*)malloc(numberOfRows * sizeof(listastudenata));
+
+	fp = fopen("dat.txt", "r");
+
+	for (i = 0; i < numberOfRows; i++)
+	{
+		fscanf(fp, "%s %s %d", list[i].ime, list[i].prezime, &list[i].bodovi);
+		if (list[i].bodovi > maxbodova)
+			maxbodova = list[i].bodovi;
+	}
+
+	for (i = 0; i < numberOfRows; i++)
+	{
+		printf("%s %s %d %2.1f\n", list[i].ime, list[i].prezime, list[i].bodovi, (double)list[i].bodovi/(double)maxbodova*100);
+	}
+
+	fclose(fp);
+	free(list);
 
 	return 0;
 }

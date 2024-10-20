@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="zd1.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="dat.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
