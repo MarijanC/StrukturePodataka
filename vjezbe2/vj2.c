@@ -9,10 +9,9 @@ struct _struct;
 typedef struct _person* position;
 typedef struct _person
 {
-	//ime
-	char name[MAX];
-	char lastName[MAX];
-	int birthYear;
+	char name[MAX];			//ime
+	char lastName[MAX];		//prezime
+	int birthYear;			//godina roðenja
 
 	position next;
 }Person;
@@ -36,10 +35,21 @@ int main()
 		.next = NULL
 	};
 
+	AppendList(&head, "Ante", "Antic", 2003);
+	AppendList(&head, "Borna", "Boric", 2004);
+
+	PrintList(&head);
+
+	PrependList(&head, "Cvita", "Cvitic", 2002);
+
+	PrintList(&head);
+
+	Delete(&head, "Borna");
+
 	return 0;
 }
 
-position CreatePerson(char* name, char* lastName, int birthYear)
+position CreatePerson(char* name, char* lastName, int birthYear)				//Stvara novu osobu
 {
 	position newPerson = NULL;
 	newPerson = (position)malloc(sizeof(Person));
@@ -54,7 +64,7 @@ position CreatePerson(char* name, char* lastName, int birthYear)
 	newPerson->birthYear = birthYear;
 }
 
-int PrependList(position head, char* name, char* lastname, int birthYear)
+int PrependList(position head, char* name, char* lastname, int birthYear)		//Dodaje novu osobu na poèetak liste
 {
 	position newPerson = NULL;
 	newPerson = CreatePerson(name, lastname, birthYear);
@@ -68,7 +78,7 @@ int PrependList(position head, char* name, char* lastname, int birthYear)
 	return EXIT_SUCCESS;
 }
 
-int PrintList(position first)
+int PrintList(position first)													//Ispisuje listu
 {
 	position temp = NULL;
 	temp = first;
@@ -80,7 +90,7 @@ int PrintList(position first)
 	return EXIT_SUCCESS;
 }
 
-int AppendList(position head, char* name, char* lastName, int birthYear)
+int AppendList(position head, char* name, char* lastName, int birthYear)		//Dodaje novu osobu na kraj liste
 {
 	position newPerson = NULL;
 	position last = NULL;
@@ -100,7 +110,7 @@ int AppendList(position head, char* name, char* lastName, int birthYear)
 	return EXIT_SUCCESS;
 }
 
-position FindLast(position head)
+position FindLast(position head)												//Pronalazi osobu na kraju liste
 {
 	position last = NULL;
 	last = head;
@@ -111,7 +121,7 @@ position FindLast(position head)
 	return last;
 }
 
-position FindPerson(position first, char* lastName)
+position FindPerson(position first, char* lastName)								//Pronalazi na kojoj se poziciji nalazi odreðena osoba
 {
 	position temp = NULL;
 
@@ -128,7 +138,7 @@ position FindPerson(position first, char* lastName)
 	return NULL;
 }
 
-int Delete(position head, char* name)
+int Delete(position head, char* name)											//Briše osobu sa liste
 {
 	position prev = NULL;
 	position toDelete = NULL;
@@ -138,11 +148,19 @@ int Delete(position head, char* name)
 	toDelete = prev->next;
 	prev->next = toDelete->next;
 
+	free(toDelete);
+
 	return EXIT_SUCCESS;
 }
 
-position FindPrev(position head, char* name)
+position FindPrev(position head, char* name)									//Pronalazi osobu koja se nalazi prije unešene
 {
 	position temp = head;
 
+	while (temp->next->name != name)
+	{
+		temp = temp->next;
+	}
+
+	return temp;
 }
