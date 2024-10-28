@@ -22,6 +22,9 @@ position FindLast(position head);
 position FindPerson(position first, char* lastName);
 int Delete(position head, char* lastName);
 position FindPrev(position head, char* lastName);
+int AddAfter(position head, char* prevLastName, char* name, char* lastName, int birthYear);
+int AddBefore(position head, char* nextLastName, char* name, char* lastName, int birthYear);
+int SortList(position head);
 
 int main() {
     Person head = { .name = "", .lastName = "", .birthYear = 0, .next = NULL };
@@ -35,6 +38,10 @@ int main() {
     PrintList(&head);
 
     Delete(&head, "Boric");
+    PrintList(&head);
+
+    AddAfter(&head, "Cvitic", "Duje", "Dujic", 2001);
+    AddBefore(&head, "Antic", "Franjo", "Frankic", 2005);
     PrintList(&head);
 
     return 0;
@@ -128,4 +135,53 @@ int Delete(position head, char* lastName) {
     free(toDelete);
 
     return EXIT_SUCCESS;
+}
+
+int AddAfter(position head, char* prevLastName, char* name, char* lastName, int birthYear)
+{
+    position newPerson = CreatePerson(name, lastName, birthYear);
+    if (newPerson == NULL)
+    {
+        return -1;
+    }
+
+    position prev = FindPerson(head, prevLastName);
+    if (prev == NULL)
+    {
+        return -1;
+    }
+
+    newPerson->next = prev->next;
+    prev->next = newPerson;
+
+    return EXIT_SUCCESS;
+}
+
+int AddBefore(position head, char* nextLastName, char* name, char* lastName, int birthYear)
+{
+    position newPerson = CreatePerson(name, lastName, birthYear);
+    if (newPerson == NULL)
+    {
+        return -1;
+    }
+
+    position prev = FindPrev(head, nextLastName);
+    if (prev == NULL)
+    {
+        return -1;
+    }
+    newPerson->next = prev->next;
+    prev->next = newPerson;
+}
+
+int SortList(position head)
+{
+    position end;
+
+    end = NULL;
+
+    while (head->next != end)
+    {
+
+    }
 }
