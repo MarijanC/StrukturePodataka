@@ -25,6 +25,7 @@ position FindPrev(position head, char* lastName);
 int AddAfter(position head, char* prevLastName, char* name, char* lastName, int birthYear);
 int AddBefore(position head, char* nextLastName, char* name, char* lastName, int birthYear);
 int SortList(position head);
+int Swap(position head, char* lastName1, char* lastName2);
 int PrintToFile(position head);
 int ReadFromFile(position head);
 
@@ -47,8 +48,8 @@ int main() {
     AddBefore(&head, "Antic", "Franjo", "Frankic", 2005);
     PrintList(&head);
 
-    //SortList(&head);
-    //PrintList(&head);
+    SortList(&head);
+    PrintList(&head);
     PrintToFile(&head);
 
     printf("nova lista\n\n");
@@ -188,25 +189,34 @@ int AddBefore(position head, char* nextLastName, char* name, char* lastName, int
 
 int SortList(position head)
 {
-    position end, prev, temp;
+    position end, prev, temp, buffer;
 
     end = NULL;
-    head = head->next;
+    buffer = head->next;
 
-    while (head->next != end)
+    while (buffer->next != end)
     {
-        if (head->lastName[0] > head->next->lastName[0])
+        if (strcmp(buffer->lastName ,buffer->next->lastName) > 0)
         {
-            prev = FindPrev(head, head->lastName);
-            temp = head->next;
-            head->next->next = head;
-            head->next = temp->next; 
-            prev->next = temp;
+            Swap(head, buffer->lastName, buffer->next->lastName);
         }
-        head = head->next;
+        buffer = buffer->next;
     }
-    PrintList(&head);
     return EXIT_SUCCESS;
+}
+
+int Swap(position head, char* lastName1, char* lastName2)
+{
+    position node1, node2, prev, next;
+
+    node1 = FindPerson(head, lastName1);
+    node2 = FindPerson(head, lastName2);
+    prev = FindPrev(head, lastName1);
+    next = node2->next;
+
+    prev->next = node2;
+    node2->next = node1;
+    node1->next = next;
 }
 
 int PrintToFile(position head)
