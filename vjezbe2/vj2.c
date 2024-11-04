@@ -25,9 +25,12 @@ position FindPrev(position head, char* lastName);
 int AddAfter(position head, char* prevLastName, char* name, char* lastName, int birthYear);
 int AddBefore(position head, char* nextLastName, char* name, char* lastName, int birthYear);
 int SortList(position head);
+int PrintToFile(position head);
+int ReadFromFile(position head);
 
 int main() {
     Person head = { .name = "", .lastName = "", .birthYear = 0, .next = NULL };
+    Person p2 = { .name = "", .lastName = "", .birthYear = 0, .next = NULL };
 
     AppendList(&head, "Ante", "Antic", 2003);
     AppendList(&head, "Borna", "Boric", 2004);
@@ -43,6 +46,15 @@ int main() {
     AddAfter(&head, "Cvitic", "Duje", "Dujic", 2001);
     AddBefore(&head, "Antic", "Franjo", "Frankic", 2005);
     PrintList(&head);
+
+    //SortList(&head);
+    //PrintList(&head);
+    PrintToFile(&head);
+
+    printf("nova lista\n\n");
+
+    //ReadFromFile(&p2);
+    //PrintList(&p2);
 
     return 0;
 }
@@ -176,12 +188,59 @@ int AddBefore(position head, char* nextLastName, char* name, char* lastName, int
 
 int SortList(position head)
 {
-    position end;
+    position end, prev, temp;
 
     end = NULL;
+    head = head->next;
 
     while (head->next != end)
     {
-
+        if (head->lastName[0] > head->next->lastName[0])
+        {
+            prev = FindPrev(head, head->lastName);
+            temp = head->next;
+            head->next->next = head;
+            head->next = temp->next; 
+            prev->next = temp;
+        }
+        head = head->next;
     }
+    PrintList(&head);
+    return EXIT_SUCCESS;
+}
+
+int PrintToFile(position head)
+{
+    position end = NULL;
+    position temp = head->next;
+    FILE* f = NULL;
+
+    f = fopen("out.txt", "w");
+
+    while (temp != end)
+    {
+        fprintf(f, "%s %s %d\n", temp->name, temp->lastName, temp->birthYear);
+
+        temp = temp->next;
+    }
+
+    fclose(f);
+    return EXIT_SUCCESS;
+}
+
+int ReadFromFile(position p2)
+{
+    FILE* f;
+    char bufferN[50], bufferLN[50];
+    int bufferBY;
+    
+    f = fopen("out.txt", "r");
+
+    while (!feof(f))
+    {
+        fscanf(f, "%s %s %d", bufferN, bufferLN, &bufferBY);
+        AppendList(&p2, bufferN, bufferLN, bufferBY);
+    }
+
+    return EXIT_SUCCESS;
 }
