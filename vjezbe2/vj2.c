@@ -25,7 +25,6 @@ position FindPrev(position head, char* lastName);
 int AddAfter(position head, char* prevLastName, char* name, char* lastName, int birthYear);
 int AddBefore(position head, char* nextLastName, char* name, char* lastName, int birthYear);
 int SortList(position head);
-int Swap(position head, char* lastName1, char* lastName2);
 int PrintToFile(position head);
 int ReadFromFile(position head);
 
@@ -48,14 +47,16 @@ int main() {
     AddBefore(&head, "Antic", "Franjo", "Frankic", 2005);
     PrintList(&head);
 
+    printf("Sortirana lista\n\n");
+
     SortList(&head);
     PrintList(&head);
     PrintToFile(&head);
 
     printf("nova lista\n\n");
 
-    //ReadFromFile(&p2);
-    //PrintList(&p2);
+    ReadFromFile(&p2);
+    PrintList(&p2);
 
     return 0;
 }
@@ -187,36 +188,32 @@ int AddBefore(position head, char* nextLastName, char* name, char* lastName, int
     prev->next = newPerson;
 }
 
-int SortList(position head)
+int SortList(position P)
 {
-    position end, prev, temp, buffer;
-
+    position end, prev_j, temp, j;
     end = NULL;
-    buffer = head->next;
 
-    while (buffer->next != end)
+    while (P->next != end)
     {
-        if (strcmp(buffer->lastName ,buffer->next->lastName) > 0)
+        prev_j = P;
+        j = P->next;
+        while (j->next != end)
         {
-            Swap(head, buffer->lastName, buffer->next->lastName);
+            if (strcmp(j->lastName, j->next->lastName) > 0)
+            {
+                temp = j->next;
+                prev_j->next = temp;
+                j->next = temp->next;
+                temp->next = j;
+
+                j = temp;
+            }
+            prev_j = j;
+            j = j->next;
         }
-        buffer = buffer->next;
+        end = j;
     }
     return EXIT_SUCCESS;
-}
-
-int Swap(position head, char* lastName1, char* lastName2)
-{
-    position node1, node2, prev, next;
-
-    node1 = FindPerson(head, lastName1);
-    node2 = FindPerson(head, lastName2);
-    prev = FindPrev(head, lastName1);
-    next = node2->next;
-
-    prev->next = node2;
-    node2->next = node1;
-    node1->next = next;
 }
 
 int PrintToFile(position head)
@@ -229,9 +226,11 @@ int PrintToFile(position head)
 
     while (temp != end)
     {
-        fprintf(f, "%s %s %d\n", temp->name, temp->lastName, temp->birthYear);
+        fprintf(f, "%s %s %d", temp->name, temp->lastName, temp->birthYear);
 
         temp = temp->next;
+        if (temp != end)
+            fprintf(f, "\n");
     }
 
     fclose(f);
@@ -249,7 +248,7 @@ int ReadFromFile(position p2)
     while (!feof(f))
     {
         fscanf(f, "%s %s %d", bufferN, bufferLN, &bufferBY);
-        AppendList(&p2, bufferN, bufferLN, bufferBY);
+        AppendList(p2, bufferN, bufferLN, bufferBY);
     }
 
     return EXIT_SUCCESS;
