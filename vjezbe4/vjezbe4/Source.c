@@ -77,7 +77,7 @@ int Unos(listPoli P1, listPoli P2, char*fileName)
 
 		for (i = 0; i < 4; i++)
 		{
-			*buffer++;
+			buffer++;
 		}
 	}
 
