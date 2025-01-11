@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+/*#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,7 +27,7 @@ int main()
 	Directory root = { .name = "C:", .child = NULL, .next = NULL };
 
 	return 0;
-}
+}*/
 
 // odavde je kod koji radi al nisan tia brisat tvoj
 #pragma warning (disable: 4047)
