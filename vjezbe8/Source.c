@@ -1,16 +1,16 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+		#define _CRT_SECURE_NO_WARNINGS
+		#include <stdio.h>
+		#include <stdlib.h>
+		#include <string.h>
+		#include <ctype.h>
 
-struct _node;
-typedef struct _node* Position;
-typedef struct _node {
-	int value;
-	Position left;
-	Position right;
-}Node;
+		struct _node;
+		typedef struct _node* Position;
+		typedef struct _node {
+			int value;
+			Position left;
+			Position right;
+		}Node;
 
 Position CreateNode(Position root, int value);
 void UnosElemenata(Position root);

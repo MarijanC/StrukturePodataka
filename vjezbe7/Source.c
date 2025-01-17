@@ -30,7 +30,7 @@ int main()
 }*/
 
 // odavde je kod koji radi al nisan tia brisat tvoj
-#pragma warning (disable: 4047)
+//#pragma warning (disable: 4047)
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
